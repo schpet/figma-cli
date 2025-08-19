@@ -1,0 +1,17 @@
+{
+  "name": "@schpet/figma-cli",
+  "version": "0.1.0",
+  "license": "MIT",
+  "tasks": {
+    "dev": "deno run --watch main.ts",
+    "figma": "deno run --allow-net --allow-run --allow-read --allow-write --allow-env src/main.ts",
+    "install": "deno install -c ./deno.json --allow-env=FIGMA_PERSONAL_ACCESS_TOKEN --allow-read --allow-write --allow-run --allow-net --quiet -g -f -n figma ./src/main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.8",
+    "@std/path": "jsr:@std/path@^1.1.2",
+    "@std/fs": "jsr:@std/fs@^1.0.19"
+  },
+  "exports": "./src/main.ts"
+}
