@@ -6,7 +6,6 @@ import {
   executeWithErrorHandling,
   fetchImageUrls,
   parseFigmaUrl,
-  setupOutputDirectory,
   setupOutputPath,
   validateFigmaToken,
 } from "./utils.ts";

@@ -1,4 +1,4 @@
-import { dirname, extname, join } from "@std/path";
+import { dirname, join } from "@std/path";
 import { ensureDir } from "@std/fs";
 
 export interface FigmaUrlParts {
@@ -112,7 +112,7 @@ export async function setupOutputDirectory(
 
 export async function setupOutputPath(
   outputPath?: string,
-  nodeId?: string,
+  _nodeId?: string,
   prefix = "figma-cli-",
 ): Promise<{ dir: string; filePath?: string }> {
   if (outputPath) {
