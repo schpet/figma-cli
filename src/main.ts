@@ -7,6 +7,7 @@ import {
   fetchImageUrls,
   parseFigmaUrl,
   setupOutputDirectory,
+  setupOutputPath,
   validateFigmaToken,
 } from "./utils.ts";
 
@@ -21,7 +22,7 @@ const copyCommand = new Command()
   .name("copy")
   .description("Copy a Figma node as an image to clipboard")
   .arguments("<url:string>")
-  .option("-o, --output <path:string>", "Output directory path")
+  .option("-o, --output <path:string>", "Output file path")
   .action(async (options, url: string) => {
     await copyFigmaNode(url, options.output);
   });
@@ -38,7 +39,7 @@ const exportCommand = new Command()
   .name("export")
   .description("Download a Figma node as an image to a directory")
   .arguments("<url:string>")
-  .option("-o, --output <path:string>", "Output directory path")
+  .option("-o, --output <path:string>", "Output file path")
   .action(async (options, url: string) => {
     await exportFigmaNode(url, options.output);
   });
@@ -54,8 +55,13 @@ async function copyFigmaNode(url: string, outputPath?: string) {
     const { fileId, nodeId } = parseFigmaUrl(url);
     const imageUrls = await fetchImageUrls(token, fileId, nodeId);
 
-    const targetDir = await setupOutputDirectory(outputPath);
-    const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
+    const { dir, filePath } = await setupOutputPath(outputPath, nodeId);
+    const downloadedImages = await downloadImages(
+      imageUrls,
+      dir,
+      nodeId,
+      filePath,
+    );
 
     if (downloadedImages.length !== 1) {
       throw new Error(
@@ -92,8 +98,17 @@ async function exportFigmaNode(url: string, outputPath?: string) {
     const { fileId, nodeId } = parseFigmaUrl(url);
     const imageUrls = await fetchImageUrls(token, fileId, nodeId);
 
-    const targetDir = await setupOutputDirectory(outputPath, "figma-export-");
-    const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
+    const { dir, filePath } = await setupOutputPath(
+      outputPath,
+      nodeId,
+      "figma-export-",
+    );
+    const downloadedImages = await downloadImages(
+      imageUrls,
+      dir,
+      nodeId,
+      filePath,
+    );
 
     if (downloadedImages.length !== 1) {
       throw new Error(

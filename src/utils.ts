@@ -1,4 +1,4 @@
-import { join } from "@std/path";
+import { dirname, extname, join } from "@std/path";
 import { ensureDir } from "@std/fs";
 
 export interface FigmaUrlParts {
@@ -110,6 +110,22 @@ export async function setupOutputDirectory(
   return await Deno.makeTempDir({ prefix });
 }
 
+export async function setupOutputPath(
+  outputPath?: string,
+  nodeId?: string,
+  prefix = "figma-cli-",
+): Promise<{ dir: string; filePath?: string }> {
+  if (outputPath) {
+    // Always treat outputPath as a file path (like curl -o)
+    const dir = dirname(outputPath);
+    await ensureDir(dir);
+    return { dir, filePath: outputPath };
+  }
+  // No output path provided, use temp directory
+  const tempDir = await Deno.makeTempDir({ prefix });
+  return { dir: tempDir };
+}
+
 export function generateImageFilename(nodeId: string, index: number): string {
   return `figma-node-${nodeId.replace(":", "-")}-${index}.png`;
 }
@@ -118,12 +134,21 @@ export async function downloadImages(
   imageUrls: string[],
   targetDir: string,
   nodeId: string,
+  specificFilePath?: string,
 ): Promise<string[]> {
   const downloadedImages: string[] = [];
   for (let i = 0; i < imageUrls.length; i++) {
     const imageUrl = imageUrls[i];
-    const filename = generateImageFilename(nodeId, i);
-    const outputPath = join(targetDir, filename);
+    let outputPath: string;
+
+    if (specificFilePath && imageUrls.length === 1) {
+      // Use the specific file path for single image
+      outputPath = specificFilePath;
+    } else {
+      // Use generated filename in target directory
+      const filename = generateImageFilename(nodeId, i);
+      outputPath = join(targetDir, filename);
+    }
 
     await downloadImage(imageUrl, outputPath);
     downloadedImages.push(outputPath);

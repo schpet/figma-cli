@@ -15,6 +15,12 @@ figma node export "https://www.figma.com/design/FILE_ID/DESIGN_NAME?node-id=NODE
 figma node url "https://www.figma.com/design/FILE_ID/DESIGN_NAME?node-id=NODE_ID&t=HASH"
 ```
 
+see full info in [docs/usage.md](docs/usage.md)
+
+> [!TIP]
+> Copy usage.md to your ~/.claude/CLAUDE.md or other global llm rules file to
+> allow llm coding tools to use this
+
 ## installation
 
 1. [install deno](https://docs.deno.com/runtime/getting_started/installation/)
