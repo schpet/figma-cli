@@ -57,9 +57,13 @@ async function copyFigmaNode(url: string, outputPath?: string) {
     const targetDir = await setupOutputDirectory(outputPath);
     const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
 
-    console.log(
-      `Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`,
-    );
+    if (downloadedImages.length !== 1) {
+      throw new Error(
+        `Expected exactly 1 image, but downloaded ${downloadedImages.length} images`,
+      );
+    }
+
+    console.log(downloadedImages[0]);
 
     if (downloadedImages.length > 0) {
       await copyImageToClipboard(downloadedImages[0]);
@@ -91,9 +95,13 @@ async function exportFigmaNode(url: string, outputPath?: string) {
     const targetDir = await setupOutputDirectory(outputPath, "figma-export-");
     const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
 
-    console.log(
-      `Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`,
-    );
+    if (downloadedImages.length !== 1) {
+      throw new Error(
+        `Expected exactly 1 image, but downloaded ${downloadedImages.length} images`,
+      );
+    }
+
+    console.log(downloadedImages[0]);
   });
 }
 
