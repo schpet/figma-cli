@@ -2,13 +2,18 @@
 
 a command line tool to copy figma nodes as images to your clipboard.
 
-currently, it has one command:
+currently, it has three commands:
 
 ```bash
+# copy a figma node to your clipboard
 figma node copy "https://www.figma.com/design/FILE_ID/DESIGN_NAME?node-id=NODE_ID&t=HASH"
-```
 
-which puts a figma node on your clipboard.
+# export a figma node to a file
+figma node export "https://www.figma.com/design/FILE_ID/DESIGN_NAME?node-id=NODE_ID&t=HASH"
+
+# get the direct image URL for a figma node
+figma node url "https://www.figma.com/design/FILE_ID/DESIGN_NAME?node-id=NODE_ID&t=HASH"
+```
 
 ## installation
 
@@ -18,7 +23,8 @@ which puts a figma node on your clipboard.
    deno install -A -g --force jsr:@schpet/figma-cli
    ```
 
-it should be available on your $PATH, if that fails, check [deno's docs](https://docs.deno.com/runtime/reference/cli/install/).
+it should be available on your $PATH, if that fails, check
+[deno's docs](https://docs.deno.com/runtime/reference/cli/install/).
 
 ### development installation
 
@@ -79,6 +85,8 @@ this will:
 ## commands
 
 - `figma node copy <url>` - copy a figma node as an image to clipboard
+- `figma node export <url>` - export a figma node to a temporary file
+- `figma node url <url>` - get the direct image URL for a figma node
 - `figma --help` - show help information
 - `figma node --help` - show node command help
 

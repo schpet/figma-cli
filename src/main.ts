@@ -1,13 +1,13 @@
 #!/usr/bin/env -S deno run --allow-net --allow-run --allow-read --allow-write --allow-env
 import { Command } from "@cliffy/command";
 import {
-  validateFigmaToken,
-  parseFigmaUrl,
-  fetchImageUrls,
-  setupOutputDirectory,
-  downloadImages,
   copyImageToClipboard,
+  downloadImages,
   executeWithErrorHandling,
+  fetchImageUrls,
+  parseFigmaUrl,
+  setupOutputDirectory,
+  validateFigmaToken,
 } from "./utils.ts";
 
 const figmaCommand = new Command()
@@ -53,11 +53,13 @@ async function copyFigmaNode(url: string, outputPath?: string) {
     const token = validateFigmaToken();
     const { fileId, nodeId } = parseFigmaUrl(url);
     const imageUrls = await fetchImageUrls(token, fileId, nodeId);
-    
+
     const targetDir = await setupOutputDirectory(outputPath);
     const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
 
-    console.log(`Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`);
+    console.log(
+      `Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`,
+    );
 
     if (downloadedImages.length > 0) {
       await copyImageToClipboard(downloadedImages[0]);
@@ -85,11 +87,13 @@ async function exportFigmaNode(url: string, outputPath?: string) {
     const token = validateFigmaToken();
     const { fileId, nodeId } = parseFigmaUrl(url);
     const imageUrls = await fetchImageUrls(token, fileId, nodeId);
-    
+
     const targetDir = await setupOutputDirectory(outputPath, "figma-export-");
     const downloadedImages = await downloadImages(imageUrls, targetDir, nodeId);
 
-    console.log(`Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`);
+    console.log(
+      `Downloaded ${downloadedImages.length} image(s) to: ${targetDir}`,
+    );
   });
 }
 

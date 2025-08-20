@@ -42,7 +42,11 @@ export function parseFigmaUrl(url: string): FigmaUrlParts {
 
     return { fileId, nodeId };
   } catch (error) {
-    throw new Error(`Failed to parse Figma URL: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to parse Figma URL: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
   }
 }
 
@@ -95,7 +99,10 @@ export async function downloadImage(
   await Deno.writeFile(outputPath, new Uint8Array(imageData));
 }
 
-export async function setupOutputDirectory(outputPath?: string, prefix = "figma-cli-"): Promise<string> {
+export async function setupOutputDirectory(
+  outputPath?: string,
+  prefix = "figma-cli-",
+): Promise<string> {
   if (outputPath) {
     await ensureDir(outputPath);
     return outputPath;
@@ -107,7 +114,11 @@ export function generateImageFilename(nodeId: string, index: number): string {
   return `figma-node-${nodeId.replace(":", "-")}-${index}.png`;
 }
 
-export async function downloadImages(imageUrls: string[], targetDir: string, nodeId: string): Promise<string[]> {
+export async function downloadImages(
+  imageUrls: string[],
+  targetDir: string,
+  nodeId: string,
+): Promise<string[]> {
   const downloadedImages: string[] = [];
   for (let i = 0; i < imageUrls.length; i++) {
     const imageUrl = imageUrls[i];
@@ -144,11 +155,15 @@ export async function copyImageToClipboard(imagePath: string): Promise<void> {
   }
 }
 
-export async function executeWithErrorHandling(operation: () => Promise<void>): Promise<void> {
+export async function executeWithErrorHandling(
+  operation: () => Promise<void>,
+): Promise<void> {
   try {
     await operation();
   } catch (error) {
-    console.error(`Error: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`,
+    );
     Deno.exit(1);
   }
 }
