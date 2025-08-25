@@ -26,7 +26,7 @@ see full info in [docs/usage.md](docs/usage.md)
 1. [install deno](https://docs.deno.com/runtime/getting_started/installation/)
 2. install the package
    ```bash
-   deno install -A -g --force jsr:@schpet/figma-cli
+   deno install -A -g --force jsr:@schpet/figma-cli -n figma
    ```
 
 it should be available on your $PATH, if that fails, check
